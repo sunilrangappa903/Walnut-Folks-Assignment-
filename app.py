@@ -1,7 +1,7 @@
 import os
 import json
 from flask import Flask, request, jsonify, render_template
-import google.generativeai as genai
+from groq import Groq
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -9,14 +9,15 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Configure Gemini AI
-api_key = os.getenv("GOOGLE_API_KEY")
+# Configure AI interface
+api_key = os.getenv("API_KEY")
 if not api_key:
-    raise ValueError("GOOGLE_API_KEY environment variable not set.")
-genai.configure(api_key=api_key)
+    raise ValueError("API_KEY environment variable not set.")
 
-# We use gemini-2.5-flash for text generation tasks where speed is important
-model = genai.GenerativeModel('gemini-2.5-flash')
+# Default model - can be overridden via MODEL_NAME env var
+MODEL_NAME = os.getenv("MODEL_NAME", "llama-3.3-70b-versatile")
+
+client = Groq(api_key=api_key)
 
 PROMPT_TEMPLATE = """
 You are an expert Social Media Strategist and Copywriter.
@@ -73,10 +74,24 @@ def generate_tweets():
             description=description
         )
 
-        response = model.generate_content(prompt)
-        response_text = response.text.strip()
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a backend JSON-only API. You must strictly output valid JSON exactly as requested without markdown blocks."
+                },
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+            model=MODEL_NAME,
+            temperature=0.7,
+        )
+
+        response_text = chat_completion.choices[0].message.content.strip()
         
-        # Clean up potential markdown formatting from Gemini
+        # Clean up potential markdown formatting from the AI
         if response_text.startswith("```json"):
             response_text = response_text[7:]
         if response_text.startswith("```"):

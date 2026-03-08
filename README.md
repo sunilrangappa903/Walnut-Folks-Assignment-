@@ -1,6 +1,6 @@
 # AI-Powered Tweet Generator - Walnut Folks Assignment
 
-Welcome to the AI Tweet Generator. This web application accepts simple brand inputs (Name, Industry, Objective, Description) and utilizes Google's Gemini AI to infer the brand tone and generate 10 highly tailored, on-brand tweets across various styles.
+Welcome to the AI Tweet Generator. This web application accepts simple brand inputs (Name, Industry, Objective, Description) and utilizes an AI API to infer the brand tone and generate 10 highly tailored, on-brand tweets across various styles.
 
 ---
 
@@ -38,10 +38,10 @@ The web application dynamically generates tweets based on varying inputs. Below 
 ## 2. Approach Document
 
 ### How I Analysed Brand Voice
-I utilized **prompt-based inference** rather than manually coding rigid logic trees. By passing the user's inputs (Industry, Objective, and a free-text Description) directly into a carefully engineered Zero-Shot Prompt, the Gemini AI acts as an expert copywriter. The model infers the brand tone, target audience, and content themes contextually based on the vocabulary and nature of the provided description.
+I utilized **prompt-based inference** rather than manually coding rigid logic trees. By passing the user's inputs (Industry, Objective, and a free-text Description) directly into a carefully engineered Zero-Shot Prompt, the generic AI acts as an expert copywriter. The model infers the brand tone, target audience, and content themes contextually based on the vocabulary and nature of the provided description.
 
 ### Prompts & Logic Structure
-The logic is driven by a single, comprehensive Prompt Template in the Flask backend (`app.py`), utilizing `gemini-2.5-flash`:
+The logic is driven by a single, comprehensive Prompt Template in the Flask backend (`app.py`), utilizing high-speed AI inference models:
 1.  **Role Injection:** "You are an expert Social Media Strategist and Copywriter."
 2.  **Task Segregation:** The prompt explicitly asks for two tasks: 
     * *Task 1:* Voice analysis (Extract tone, audience, themes).
@@ -51,7 +51,7 @@ The logic is driven by a single, comprehensive Prompt Template in the Flask back
 
 ### Tools Used
 *   **Backend Logic:** Python and Flask (REST API Routing)
-*   **AI Engine:** Google Gemini API (`genai.GenerativeModel('gemini-2.5-flash')`)
+*   **AI Engine:** AI text generation SDK
 *   **Frontend UI:** Vanilla HTML, CSS (using native CSS Variables, Grid/Flexbox, Glassmorphism), and Vanilla JavaScript (Fetch API async/await).
 *   **Iconography:** Feather Icons.
 
@@ -64,14 +64,16 @@ The application is structured to be easily deployed to [Render.com](https://rend
 1. Connect this GitHub repository to a new Render "Web Service".
 2. Set the Build Command to: `pip install -r requirements.txt`
 3. Set the Start Command to: `gunicorn app:app`
-4. **Crucial Security Step:** In the Render dashboard, go to "Environment" and add a secret Environment Variable:
-   - Key: `GOOGLE_API_KEY`
-   - Value: `your_actual_gemini_api_key`
+4. **Crucial Security Step:** In the Render dashboard, go to "Environment" and add secret Environment Variables:
+   - Key: `API_KEY`
+   - Value: `your_actual_api_key`
+   - Key: `MODEL_NAME`
+   - Value: `your_preferred_model_name`
 *(This ensures your API key remains hidden from the public GitHub repository).*
 
 ### Prerequisites for Local Run
 1. Python 3.9+ 
-2. A valid Google Gemini API Key. (The provided key in `.env` may hit rate limits or "403 Forbidden" errors if flagged publicly).
+2. A valid AI API Key.
 
 ### Installation & Running Locally
 1. Clone this repository: `git clone https://github.com/sunilrangappa903/Walnut-Folks-Assignment-.git`
@@ -87,9 +89,10 @@ The application is structured to be easily deployed to [Render.com](https://rend
    ```bash
    pip install -r requirements.txt
    ```
-5. Ensure the `.env` file exists with your active Gemini API key:
+5. Ensure the `.env` file exists with your active API key and model name:
    ```env
-   GOOGLE_API_KEY=your_key_here
+   API_KEY=your_key_here
+   MODEL_NAME=your_preferred_model_name
    ```
 6. Start the Flask application:
    ```bash
