@@ -6,6 +6,9 @@ Welcome to the AI Tweet Generator. This web application accepts simple brand inp
 
 ## 1. Solution Output
 
+**Live Link (Render):** [https://your-render-app-name.onrender.com](https://your-render-app-name.onrender.com)  
+*(Note: As this is hosted on a free Render instance, it may take 50 seconds to spin up if inactive).*
+
 The web application dynamically generates tweets based on varying inputs. Below are examples of how the tone completely shifts based on brand identity.
 
 ### Example 1: TechFlow (SaaS / AI Tools)
@@ -56,7 +59,17 @@ The logic is driven by a single, comprehensive Prompt Template in the Flask back
 
 ## 3. Access to the Tool / Workflow
 
-### Prerequisites
+### Live Deployment (Render)
+The application is structured to be easily deployed to [Render.com](https://render.com/).
+1. Connect this GitHub repository to a new Render "Web Service".
+2. Set the Build Command to: `pip install -r requirements.txt`
+3. Set the Start Command to: `gunicorn app:app`
+4. **Crucial Security Step:** In the Render dashboard, go to "Environment" and add a secret Environment Variable:
+   - Key: `GOOGLE_API_KEY`
+   - Value: `your_actual_gemini_api_key`
+*(This ensures your API key remains hidden from the public GitHub repository).*
+
+### Prerequisites for Local Run
 1. Python 3.9+ 
 2. A valid Google Gemini API Key. (The provided key in `.env` may hit rate limits or "403 Forbidden" errors if flagged publicly).
 
