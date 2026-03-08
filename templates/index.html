@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tweet Generator | Walnut Folks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Load Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i data-feather="twitter" class="icon-brand"></i>
+                <h1>AI Tweet Generator</h1>
+            </div>
+            <p class="subtitle">Generate 10 on-brand tweets instantly using Gemini AI.</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Left Column: Input Form -->
+            <section class="input-section glass-card">
+                <h2>Brand Details</h2>
+                <form id="tweetForm" class="form">
+                    <div class="form-group">
+                        <label for="brandName">Brand Name <span class="optional">(Optional)</span></label>
+                        <input type="text" id="brandName" name="brandName" placeholder="e.g. Nike, Apple, Wendy's">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="industry">Industry / Category <span class="optional">(Optional)</span></label>
+                        <input type="text" id="industry" name="industry" placeholder="e.g. Sportswear, Tech, Fast Food">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="objective">Campaign Objective</label>
+                        <select id="objective" name="objective" required>
+                            <option value="engagement">Engagement / Community Building</option>
+                            <option value="promotion">Product Promotion / Sales</option>
+                            <option value="awareness">Brand Awareness</option>
+                            <option value="education">Educational / Value-driven</option>
+                            <option value="event">Event Promotion</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Brand / Product Description</label>
+                        <textarea id="description" name="description" rows="4" placeholder="Tell us about the products, recent updates, or key messaging..." required></textarea>
+                    </div>
+
+                    <button type="submit" id="generateBtn" class="btn-primary">
+                        <span class="btn-text">Generate Tweets</span>
+                        <i data-feather="zap"></i>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Right Column: Output Area -->
+            <section class="output-section">
+                <!-- Loading State -->
+                <div id="loadingState" class="state-container hidden">
+                    <div class="spinner"></div>
+                    <h3>Analyzing Brand Voice...</h3>
+                    <p>Generating your 10 custom tweets.</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="state-container">
+                    <i data-feather="message-square" class="icon-large"></i>
+                    <h3>Ready to generate</h3>
+                    <p>Fill out the form on the left to get started.</p>
+                </div>
+
+                <!-- Results State -->
+                <div id="resultsState" class="results-container hidden">
+                    <!-- Brand Voice Analysis -->
+                    <div class="voice-analysis glass-card">
+                        <h3><i data-feather="target"></i> Brand Voice Analysis</h3>
+                        <ul id="voiceSummary" class="voice-list">
+                            <!-- Injected by JS -->
+                        </ul>
+                    </div>
+
+                    <!-- Generated Tweets -->
+                    <div class="tweets-header">
+                        <h3><i data-feather="twitter"></i> Generated Tweets (10)</h3>
+                    </div>
+                    
+                    <div id="tweetsGrid" class="tweets-grid">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        // Initialize feather icons
+        feather.replace();
+    </script>
+</body>
+</html>
